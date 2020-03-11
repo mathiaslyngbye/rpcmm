@@ -1,0 +1,24 @@
+Scan ethernet port for devices
+nmap -n -sP 10.42.0.255/24
+
+
+Opsætning:
+https://learn.adafruit.com/turning-your-raspberry-pi-zero-into-a-usb-gadget/ethernet-gadget
+
+Install docker:
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+Docker:
+on master:
+sudo docker swarm init --advertise-addr <addr>
+yields join token.
+
+on workers:
+effectively just paste
+docker swarm join --token <token> <some addr>
+
+
+Test:
+docker service create --restart-condition=on-failure --name i-sleep alpine sleep 20
+
