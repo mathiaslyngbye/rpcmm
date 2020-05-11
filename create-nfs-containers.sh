@@ -1,0 +1,1 @@
+docker service create --replicas 3 --mount type=volume,dst=/mount/,volume-driver=local,volume-opt=type=nfs,\"volume-opt=o=nfsvers=4,addr=10.42.0.181\",volume-opt=device=:/clusterfs alpine /bin/sh -c "while true; do echo 'OK'; sleep 2; done"
