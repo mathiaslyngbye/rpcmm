@@ -22,3 +22,8 @@ docker swarm join --token <token> <some addr>
 Test:
 docker service create --restart-condition=on-failure --name i-sleep alpine sleep 20
 
+To launch:
+run the create containers script.
+
+To attach:
+docker exec -it <service name> /bin/sh
