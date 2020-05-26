@@ -1,1 +1,2 @@
-docker service create --replicas 3 --mount type=volume,dst=/mount/,volume-driver=local,volume-opt=type=nfs,\"volume-opt=o=nfsvers=4,addr=10.42.0.181\",volume-opt=device=:/clusterfs alpine /bin/sh -c "while true; do ls /mount/; sleep 2; done"
+#docker service create --replicas 3 --mount type=volume,dst=/mount/,volume-driver=local,volume-opt=type=nfs,\"volume-opt=o=nfsvers=4,addr=10.42.0.181\",volume-opt=device=:/clusterfs alpine /bin/sh -c "while true; do ls /mount/; sleep 2; done"
+docker service create --restart-condition none --mount type=volume,dst=/mount/,volume-driver=local,volume-opt=type=nfs,\"volume-opt=o=nfsvers=4,addr=10.42.0.181\",volume-opt=device=:/clusterfs alpine /bin/sh -c "sleep 10 && /mount/slave.out 2 2"
