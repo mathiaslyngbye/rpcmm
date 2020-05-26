@@ -18,8 +18,8 @@ const char* getfield(char* line, int index)
 
 int main(int argc, char** argv)
 {
-    size_t in_row = 0;
-    size_t in_col = 0; 
+    int in_row = 0;
+    int in_col = 0; 
     
     if(argc == 3)
     {
@@ -32,14 +32,20 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    FILE* stream1 = fopen("input1.csv", "r");
-    FILE* stream2 = fopen("input2.csv", "r");
+    // Open local ledger
+    char output[50];
+    sprintf(output, "./share/out-r%dc%d.csv", in_row, in_col);
+    FILE* file_out = fopen(output, "w");
+    
+    // Find and open input files
+    FILE* stream1 = fopen("./share/input1.csv", "r");
+    FILE* stream2 = fopen("./share/input2.csv", "r");
       
     char line1[MAX_LINE_SIZE];
     char line2[MAX_LINE_SIZE];
     
     // Get specific row of input 1
-    for(size_t i = 0; i < in_row; i++)
+    for(int i = 0; i < in_row; i++)
     {
         fgets(line1,1024,stream1);
     }
@@ -57,5 +63,7 @@ int main(int argc, char** argv)
         iterations++;
     }
     printf("Product: %i\n", sum);
+    fprintf(file_out, "%d,%d,%d\n", in_row, in_col, sum);
+
     return 0;
 }
