@@ -90,10 +90,10 @@ int main(int argc, char** argv)
     {
         for (int rows = 0; rows < matrix1_rows; rows++)
         {
-            std::string index1 = std::to_string(rows);
-            std::string index2 = std::to_string(cols);
+            std::string index1 = std::to_string(rows+1);
+            std::string index2 = std::to_string(cols+1);
 
-            command_container = "/bin/sh -c \"/mount/slave.out " + index1+1 + " " + index2+1 + "\"";
+            command_container = "/bin/sh -c \"sleep 10 && /mount/slave.out " + index1 + " " + index2 + "\"";
             
 	    command =  docker + " ";
 	    command += restart_condition + " ";
