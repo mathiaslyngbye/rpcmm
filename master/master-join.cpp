@@ -2,7 +2,7 @@
 #include <fstream>
 #include <stdlib.h>
 
-int GetRowCount(std::string file_name_input)
+int getRowCount(std::string file_name_input)
 {
     //Open two matrices
     std::string file_name = file_name_input;
@@ -27,7 +27,7 @@ int GetRowCount(std::string file_name_input)
     return matrix_rows;
 }
 
-int GetColsCount(std::string file_name_input)
+int getColCount(std::string file_name_input)
 {
     //Open two matrices
     std::string file_name = file_name_input;
@@ -57,62 +57,29 @@ int GetColsCount(std::string file_name_input)
 int main(int argc, char** argv)
 {
     //Configure arguments for launching a docker service
-    std::string docker = "docker service create";
-    std::string restart_condition = "--restart-condition none";
-    std::string replicas = "--replicas 3";
-    std::string mounting = "--mount type=volume,dst=/mount/,volume-driver=local,volume-opt=type=nfs,\\\"volume-opt=o=nfsvers=4,addr=10.42.0.181\\\",volume-opt=device=:/clusterfs";
-    std::string dist = "alpine";
-    std::string command_container = "/bin/sh -c \"while true; do ls /mount/; sleep 2; done\"";
+    int rows_max = getRowCount("./share/input1.csv");
+    int cols_max = getColCount("./share/input2.csv");
 
-    std::string command = docker + " " +replicas+" "+mounting+" "+dist+" "+command_container;
-
-    //Call the docker service
-    //std::cout << command << std::endl;
-    //system(command.c_str());
-
-    int matrix1_rows = 0, matrix1_cols = 0;
-    int matrix2_rows = 0, matrix2_cols = 0;
-
-    matrix1_rows = GetRowCount("/clusterfs/share/input1.csv");
-    matrix1_cols = GetColsCount("/clusterfs/share/input1.csv");
-
-    matrix2_rows = GetRowCount("/clusterfs/share/input2.csv");
-    matrix2_cols = GetColsCount("/clusterfs/share/input2.csv");
-
-    if (matrix1_cols != matrix2_rows)
+    if (cols_max != rows_max)
     {
         std::cout << "The dimensions of the matrix do not match... exiting" << std::endl;
-        return 0;
+        return -1;
     }
 
-    // Generate commands for multiplying
-    for (int cols = 0; cols < matrix2_cols; cols++)
+    char filler = '.';
+    std::ofstream file_out;
+    file_out.open("./share/output1.csv", std::fstream::app);
+    for (int rows = 1; rows <= rows_max; rows++)
     {
-        for (int rows = 0; rows < matrix1_rows; rows++)
+        for (int cols = 1; cols <= cols_max; cols++)
         {
-            std::string index1 = std::to_string(rows+1);
-            std::string index2 = std::to_string(cols+1);
+            // file_out << filler;
 
-            command_container = "/bin/sh -c \"sleep 10 && /mount/slave.out " + index1 + " " + index2 + "\"";
-            
-	    command =  docker + " ";
-	    command += restart_condition + " ";
-	    command += mounting + " ";
-	    command += dist + " ";
-	    command += command_container;
-            std::cout << command << std::endl;
-   	    
-	    system(command.c_str());
+            if(cols != cols_max)
+                file_out << ',';
         }
+        file_out << "\n";
     }
-
-    /*
-    std::cout << "Number of rows: " << matrix1_rows << std::endl;
-    std::cout << "Number of cols: " << matrix1_cols << std::endl;
-
-    std::cout << "Number of rows: " << matrix2_rows << std::endl;
-    std::cout << "Number of cols: " << matrix2_cols << std::endl;
-    */
 
     return 0;
 }
