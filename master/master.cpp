@@ -93,7 +93,7 @@ int main(int argc, char** argv)
             std::string index1 = std::to_string(rows);
             std::string index2 = std::to_string(cols);
 
-            command_container = "/bin/sh -c \"/mount/slave.out " + index1 + " " + index2 + "\"";
+            command_container = "/bin/sh -c \"/mount/slave.out " + index1+1 + " " + index2+1 + "\"";
             
 	    command =  docker + " ";
 	    command += restart_condition + " ";
