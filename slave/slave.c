@@ -34,12 +34,12 @@ int main(int argc, char** argv)
 
     // Open local ledger
     char output[50];
-    sprintf(output, "./share/out-r%dc%d.csv", in_row, in_col);
+    sprintf(output, "/mount/share/out-r%dc%d.csv", in_row, in_col);
     FILE* file_out = fopen(output, "w");
     
     // Find and open input files
-    FILE* stream1 = fopen("./share/input1.csv", "r");
-    FILE* stream2 = fopen("./share/input2.csv", "r");
+    FILE* stream1 = fopen("/mount/share/input1.csv", "r");
+    FILE* stream2 = fopen("/mount/share/input2.csv", "r");
       
     char line1[MAX_LINE_SIZE];
     char line2[MAX_LINE_SIZE];
