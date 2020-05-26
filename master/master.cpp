@@ -84,11 +84,27 @@ int main(int argc, char** argv)
         return 0;
     }
 
+    // Generate commands for multiplying
+    for (int cols = 0; cols < matrix2_cols; cols++)
+    {
+        for (int rows = 0; rows < matrix1_rows; rows++)
+        {
+            std::string index1 = std::to_string(rows);
+            std::string index2 = std::to_string(cols);
+
+            command_container = "/bin/sh -c \"./mount/slave.out " + index1 + " " + index2;
+            command = docker+replicas+" "+mounting+" "+dist+" "+command_container;
+            std::cout << command << std::endl;
+        }
+    }
+
+    /*
     std::cout << "Number of rows: " << matrix1_rows << std::endl;
     std::cout << "Number of cols: " << matrix1_cols << std::endl;
 
     std::cout << "Number of rows: " << matrix2_rows << std::endl;
     std::cout << "Number of cols: " << matrix2_cols << std::endl;
+    */
 
     return 0;
 }
