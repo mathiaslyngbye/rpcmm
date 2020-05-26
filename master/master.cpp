@@ -58,6 +58,7 @@ int main(int argc, char** argv)
 {
     //Configure arguments for launching a docker service
     std::string docker = "docker service create ";
+    std::string restart_condition = "--restart-condition none";
     std::string replicas = "--replicas 3";
     std::string mounting = "--mount type=volume,dst=/mount/,volume-driver=local,volume-opt=type=nfs,\\\"volume-opt=o=nfsvers=4,addr=10.42.0.181\\\",volume-opt=device=:/clusterfs";
     std::string dist = "alpine";
@@ -93,7 +94,7 @@ int main(int argc, char** argv)
             std::string index2 = std::to_string(cols);
 
             command_container = "/bin/sh -c \"./mount/slave.out " + index1 + " " + index2;
-            command = docker+replicas+" "+mounting+" "+dist+" "+command_container;
+            command = docker+restart_condition+" "+mounting+" "+dist+" "+command_container;
             std::cout << command << std::endl;
         }
     }
