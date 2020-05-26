@@ -106,13 +106,62 @@ int main(int argc, char** argv)
         }
     }
 
-    /*
-    std::cout << "Number of rows: " << matrix1_rows << std::endl;
-    std::cout << "Number of cols: " << matrix1_cols << std::endl;
+    //Assemble the answers
+    std::string file_name = "answer.csv";
+    std::ofstream myfileans;
+    std::ifstream myfileread;
 
-    std::cout << "Number of rows: " << matrix2_rows << std::endl;
-    std::cout << "Number of cols: " << matrix2_cols << std::endl;
-    */
+    std::string temp;
+
+    myfileans.open(file_name, std::fstream::app);
+
+    //This hell of nested for loops assumes we fill an entire row then fill a col
+    //I apologize for this
+
+    //Go through all the rows and cols which need to be filled
+    for(int answer_rows = 0; answer_rows < matrix1_rows; answer_rows++)
+    {
+        for(int answer_cols = 0; answer_cols < matrix2_cols; answer_cols++)
+        {
+            //Open file for read
+            std::string file_name = "out-r" + std::to_string(answer_rows)+'c'+std::to_string(answer_cols);
+            myfileread.open(file_name);
+
+            std::string temp_read;
+            getline(myfileread,temp_read);
+
+            //Get to the correct place to insert
+            for (int insert_rows = 0; insert_rows < answer_rows; insert_rows++)
+            {
+                for (int insert_cols = 0; insert_cols < answer_cols; insert_cols++)
+                {
+                    size_t lineLength = 0;
+
+                    getline(myfileans, temp);
+                    lineLength = temp.size();
+
+                    //Find the correct row
+                    int indexCount = 0;
+                    for (size_t i = 0; i < lineLength; i++)
+                    {
+                        if(temp.at(i) == ',')
+                        {
+                            indexCount+=1;
+                        }
+                    }
+
+                    //Insert answer in answer csv
+                    if (indexCount == answer_rows)
+                    {
+                        myfileans << found_ans << ",";
+                    }
+                }
+            }
+
+            //Close file after read
+            myfile.close();
+        }
+    }
 
     return 0;
 }
