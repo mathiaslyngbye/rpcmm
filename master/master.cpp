@@ -72,11 +72,11 @@ int main(int argc, char** argv)
     int matrix1_rows = 0, matrix1_cols = 0;
     int matrix2_rows = 0, matrix2_cols = 0;
 
-    matrix1_rows = GetRowCount("test.csv");
-    matrix1_cols = GetColsCount("test.csv");
+    matrix1_rows = GetRowCount("/clusterfs/share/input1.csv");
+    matrix1_cols = GetColsCount("/clusterfs/share/input1.csv");
 
-    matrix2_rows = GetRowCount("test2.csv");
-    matrix2_cols = GetColsCount("test2.csv");
+    matrix2_rows = GetRowCount("/clusterfs/share/input2.csv");
+    matrix2_cols = GetColsCount("/clusterfs/share/input2.csv");
 
     if (matrix1_cols != matrix2_rows)
     {
@@ -92,7 +92,7 @@ int main(int argc, char** argv)
             std::string index1 = std::to_string(rows);
             std::string index2 = std::to_string(cols);
 
-            command_container = "/bin/sh -c \"./mount/slave.out " + index1 + " " + index2;
+            command_container = "/bin/sh -c \"/mount/slave.out " + index1 + " " + index2;
             command = docker+replicas+" "+mounting+" "+dist+" "+command_container;
             std::cout << command << std::endl;
         }
