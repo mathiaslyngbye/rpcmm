@@ -122,13 +122,17 @@ int main(int argc, char** argv)
         {
             //Open file for read
             std::string file_name = "/clusterfs/share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
-            myfileread.open(file_name);
-
-            while (!myfileread.is_open())
+            
+	    while(true)
             {
-                usleep(100);
-                continue;
-            }
+                myfileread.open(file_name);
+
+		if(myfileread.is_open())
+                    break;
+
+		std::cout << "Waiting..." << std::endl;
+		usleep(1000000);
+	    }
 
             std::string temp_read;
             getline(myfileread,temp_read);
