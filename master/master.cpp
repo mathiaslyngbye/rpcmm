@@ -79,6 +79,7 @@ int main(int argc, char** argv)
     matrix2_rows = GetRowCount("/clusterfs/share/input2.csv");
     matrix2_cols = GetColsCount("/clusterfs/share/input2.csv");
 
+
     if (matrix1_cols != matrix2_rows)
     {
         std::cout << "The dimensions of the matrix do not match... exiting" << std::endl;
@@ -111,57 +112,52 @@ int main(int argc, char** argv)
     std::ofstream myfileans;
     std::ifstream myfileread;
 
-    std::string temp;
-
-    myfileans.open(file_name, std::fstream::app);
-
-    //This hell of nested for loops assumes we fill an entire row then fill a col
-    //I apologize for this
+    myfileans.open(file_name);
 
     //Go through all the rows and cols which need to be filled
-    for(int answer_rows = 0; answer_rows < matrix1_rows; answer_rows++)
+    for(int answer_cols = 0; answer_cols < matrix2_cols; answer_cols++)
     {
-        for(int answer_cols = 0; answer_cols < matrix2_cols; answer_cols++)
+        for(int answer_rows = 0; answer_rows < matrix1_rows; answer_rows++)
         {
             //Open file for read
-            std::string file_name = "out-r" + std::to_string(answer_rows)+'c'+std::to_string(answer_cols);
+            std::string file_name = "share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
             myfileread.open(file_name);
-
             std::string temp_read;
             getline(myfileread,temp_read);
 
-            //Get to the correct place to insert
-            for (int insert_rows = 0; insert_rows < answer_rows; insert_rows++)
+            int remove_count = 0;
+            for (size_t remove_intdex = 0; remove_intdex < temp_read.size(); remove_intdex++)
             {
-                for (int insert_cols = 0; insert_cols < answer_cols; insert_cols++)
+                if (remove_count == 2)
                 {
-                    size_t lineLength = 0;
-
-                    getline(myfileans, temp);
-                    lineLength = temp.size();
-
-                    //Find the correct row
-                    int indexCount = 0;
-                    for (size_t i = 0; i < lineLength; i++)
-                    {
-                        if(temp.at(i) == ',')
-                        {
-                            indexCount+=1;
-                        }
-                    }
-
-                    //Insert answer in answer csv
-                    if (indexCount == answer_rows)
-                    {
-                        myfileans << found_ans << ",";
-                    }
+                    break;
                 }
+
+                if(temp_read.at(0) == ',')
+                {
+                    remove_count += 1;
+                }
+
+                temp_read.erase(0, 1);
+            }
+
+            temp_read.erase(0, 1);
+
+            if(answer_rows == matrix1_rows-1)
+            {
+                myfileans << temp_read << "\n";
+            }
+            else
+            {
+                myfileans << temp_read << ",";
             }
 
             //Close file after read
-            myfile.close();
+            myfileread.close();
         }
     }
+    std::cout << "Succesfully combined the matrix" << std::endl;
+    myfileans.close();
 
     return 0;
 }
