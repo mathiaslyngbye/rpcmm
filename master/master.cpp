@@ -115,12 +115,12 @@ int main(int argc, char** argv)
     myfileans.open(file_name);
 
     //Go through all the rows and cols which need to be filled
-    for(int answer_cols = 0; answer_cols < matrix2_cols; answer_cols++)
+    for(int answer_rows = 0; answer_rows < matrix1_rows; answer_rows++)
     {
-        for(int answer_rows = 0; answer_rows < matrix1_rows; answer_rows++)
+        for(int answer_cols = 0; answer_cols < matrix2_cols; answer_cols++)
         {
             //Open file for read
-            std::string file_name = "/clusterfs/share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
+            std::string file_name = "/cluster/share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
             myfileread.open(file_name);
             std::string temp_read;
             getline(myfileread,temp_read);
