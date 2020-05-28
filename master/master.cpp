@@ -120,7 +120,7 @@ int main(int argc, char** argv)
         for(int answer_rows = 0; answer_rows < matrix1_rows; answer_rows++)
         {
             //Open file for read
-            std::string file_name = "share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
+            std::string file_name = "/clusterfs/share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
             myfileread.open(file_name);
             std::string temp_read;
             getline(myfileread,temp_read);
