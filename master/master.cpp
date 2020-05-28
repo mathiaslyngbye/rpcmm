@@ -122,21 +122,35 @@ int main(int argc, char** argv)
         {
             //Open file for read
             std::string file_name = "/clusterfs/share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
-            
-	    while(true)
+
+            while(true)
             {
                 myfileread.open(file_name);
 
-		if(myfileread.is_open())
+                if(myfileread.is_open())
                     break;
 
-		std::cout << "Waiting..." << std::endl;
-		usleep(1000000);
-	    }
+                std::cout << "Waiting..." << std::endl;
+                usleep(1000000);
+            }
 
             std::string temp_read;
             getline(myfileread,temp_read);
 
+            int remove_index = 0;
+            int delimiter_count = 0;
+            while(true)
+            {
+                if(temp_read.at(remove_index) == ',')
+                    delimiter_count++;
+
+                if(delimiter_count == 2)
+                {
+                    temp_read.erase(0,remove_index+1);
+                    break;
+                }
+            }
+            /*
             int remove_count = 0;
             for (size_t remove_intdex = 0; remove_intdex < temp_read.size(); remove_intdex++)
             {
@@ -154,6 +168,7 @@ int main(int argc, char** argv)
             }
 
             temp_read.erase(0, 1);
+            */
 
             if(answer_cols == matrix2_cols-1)
             {
