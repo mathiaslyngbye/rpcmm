@@ -57,6 +57,7 @@ int GetColsCount(std::string file_name_input)
 
 int main(int argc, char** argv)
 {
+    std::cout << "Creating command..." << std::endl;
     //Configure arguments for launching a docker service
     std::string docker = "docker service create";
     std::string restart_condition = "--restart-condition none";
@@ -74,6 +75,7 @@ int main(int argc, char** argv)
     int matrix1_rows = 0, matrix1_cols = 0;
     int matrix2_rows = 0, matrix2_cols = 0;
 
+    std::cout << "Getting matrix dimensions..." << std::endl;
     matrix1_rows = GetRowCount("/clusterfs/share/input1.csv");
     matrix1_cols = GetColsCount("/clusterfs/share/input1.csv");
 
@@ -88,6 +90,7 @@ int main(int argc, char** argv)
     }
 
     // Generate commands for multiplying
+    std::cout << "Generate commands for multiplying..." << std::endl;
     for (int cols = 0; cols < matrix2_cols; cols++)
     {
         for (int rows = 0; rows < matrix1_rows; rows++)
@@ -109,6 +112,7 @@ int main(int argc, char** argv)
     }
 
     //Assemble the answers
+    std::cout << "Assembling answers..." << std::endl;
     std::string file_name = "/clusterfs/share/answer.csv";
     std::ofstream myfileans;
     std::ifstream myfileread;
@@ -122,6 +126,7 @@ int main(int argc, char** argv)
         {
             //Open file for read
             std::string file_name = "/clusterfs/share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
+            std::cout << "Processing file: " << file_name << std::endl;
 
             while(true)
             {
@@ -139,6 +144,7 @@ int main(int argc, char** argv)
 
             int remove_index = 0;
             int delimiter_count = 0;
+            std::cout << "Processing input line..." << std::endl;
             while(true)
             {
                 if(temp_read.at(remove_index) == ',')
@@ -149,7 +155,9 @@ int main(int argc, char** argv)
                     temp_read.erase(0,remove_index+1);
                     break;
                 }
+		remove_index++;
             }
+            std::cout << "Found answer: " << temp_read << std::endl;
             /*
             int remove_count = 0;
             for (size_t remove_intdex = 0; remove_intdex < temp_read.size(); remove_intdex++)
@@ -170,6 +178,7 @@ int main(int argc, char** argv)
             temp_read.erase(0, 1);
             */
 
+            std::cout << "Add answer to output..." << std::endl;
             if(answer_cols == matrix2_cols-1)
             {
                 myfileans << temp_read << "\n";
@@ -179,6 +188,7 @@ int main(int argc, char** argv)
                 myfileans << temp_read << ",";
             }
 
+            std::cout << "Succesfully processed file..." << std::endl;
             //Close file after read
             myfileread.close();
         }
