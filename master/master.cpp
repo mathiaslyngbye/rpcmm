@@ -108,7 +108,7 @@ int main(int argc, char** argv)
     }
 
     //Assemble the answers
-    std::string file_name = "answer.csv";
+    std::string file_name = "/clusterfs/share/answer.csv";
     std::ofstream myfileans;
     std::ifstream myfileread;
 
@@ -122,6 +122,12 @@ int main(int argc, char** argv)
             //Open file for read
             std::string file_name = "/clusterfs/share/out-r" + std::to_string(answer_rows+1)+'c'+std::to_string(answer_cols+1)+".csv";
             myfileread.open(file_name);
+
+            while (!myfileread.is_open())
+            {
+                continue;
+            }
+
             std::string temp_read;
             getline(myfileread,temp_read);
 
@@ -143,7 +149,7 @@ int main(int argc, char** argv)
 
             temp_read.erase(0, 1);
 
-            if(answer_rows == matrix1_rows-1)
+            if(answer_cols == matrix2_cols-1)
             {
                 myfileans << temp_read << "\n";
             }
@@ -156,7 +162,7 @@ int main(int argc, char** argv)
             myfileread.close();
         }
     }
-    std::cout << "Succesfully combined the matrix" << std::endl;
+    std::cout << "End of main" << std::endl;
     myfileans.close();
 
     return 0;
