@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <unistd.h>
 
 int GetRowCount(std::string file_name_input)
 {
@@ -125,6 +126,7 @@ int main(int argc, char** argv)
 
             while (!myfileread.is_open())
             {
+                usleep(100);
                 continue;
             }
 
