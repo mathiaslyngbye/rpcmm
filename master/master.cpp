@@ -99,15 +99,15 @@ int main(int argc, char** argv)
             std::string index2 = std::to_string(cols+1);
 
             command_container = "/bin/sh -c \"sleep 10 && /mount/slave.out " + index1 + " " + index2 + "\"";
-            
-	    command =  docker + " ";
-	    command += restart_condition + " ";
-	    command += mounting + " ";
-	    command += dist + " ";
-	    command += command_container;
+
+            command =  docker + " ";
+            command += restart_condition + " ";
+            command += mounting + " ";
+            command += dist + " ";
+            command += command_container;
             std::cout << command << std::endl;
-   	    
-	    system(command.c_str());
+
+            system(command.c_str());
         }
     }
 
@@ -155,28 +155,9 @@ int main(int argc, char** argv)
                     temp_read.erase(0,remove_index+1);
                     break;
                 }
-		remove_index++;
+                remove_index++;
             }
             std::cout << "Found answer: " << temp_read << std::endl;
-            /*
-            int remove_count = 0;
-            for (size_t remove_intdex = 0; remove_intdex < temp_read.size(); remove_intdex++)
-            {
-                if (remove_count == 2)
-                {
-                    break;
-                }
-
-                if(temp_read.at(0) == ',')
-                {
-                    remove_count += 1;
-                }
-
-                temp_read.erase(0, 1);
-            }
-
-            temp_read.erase(0, 1);
-            */
 
             std::cout << "Add answer to output..." << std::endl;
             if(answer_cols == matrix2_cols-1)
